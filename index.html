@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Enterprise Risk & Compliance Engine</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f6f9; }
+        .container { background: white; padding: 30px; border-radius: 8px; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; font-weight: bold; cursor: pointer; }
+        #result { margin-top: 20px; padding: 15px; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Risk Validation Engine</h2>
+        <input type="number" id="income" placeholder="Monthly Income (RM)">
+        <input type="number" id="debt" placeholder="Existing Monthly Debt (RM)">
+        <select id="employment">
+            <option value="PERMANENT">Permanent Employment</option>
+            <option value="FREELANCE">Freelance / Variable Income</option>
+        </select>
+        <input type="number" id="request" placeholder="Requested Credit Limit (RM)">
+        <button onclick="processApplication()">Evaluate System Risk</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let logs = []; // Stores telemetry data for Looker Studio
+
+        function processApplication() {
+            let income = parseFloat(document.getElementById('income').value);
+            let debt = parseFloat(document.getElementById('debt').value);
+            let employment = document.getElementById('employment').value;
+            let request = parseFloat(document.getElementById('request').value);
+
+            let dti = (debt / income) * 100;
+            let status = "APPROVED";
+            let reason = "Compliance standards met.";
+
+            // Strict Anti-Fraud / Business Rules
+            if (dti > 45) {
+                status = "REJECTED";
+                reason = "High Risk: Debt-to-Income exceeds 45%.";
+            } else if (employment === "FREELANCE" && dti > 30) {
+                status = "FLAGGED FOR MANUAL AUDIT";
+                reason = "Variable income deviation detected.";
+            }
+
+            if (request > (income * 3) && status === "APPROVED") {
+                status = "LIMIT CAP APPLIED";
+                reason = `Requested limit adjusted to maximum threshold: RM ${income * 3}`;
+            }
+
+            // Display Output
+            let resDiv = document.getElementById('result');
+            resDiv.innerText = `Decision: ${status}\nDetails: ${reason}`;
+            resDiv.style.background = status === "REJECTED" ? "#f8d7da" : "#d4edda";
+
+            // Push clean raw data structured perfectly for Looker Studio
+            logs.push({ income, debt, dti: dti.toFixed(2), employment, request, status });
+            console.log("Telemetry Logs:", JSON.stringify(logs));
+        }
+    </script>
+</body>
+</html>
+
