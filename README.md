@@ -15,5 +15,5 @@ This repository contains a lightweight, functional rule-based credit risk assess
 - **Business Intelligence Analytics:** Google Looker Studio Telemetry Dashboard
 
 ## 📊 Live Deliverables & Resiliency Proof
-- **System Dashboard Access:** [TAMPAL LINK SHARE LOOKER STUDIO KAU DI SINI]
+- **System Dashboard Access:** https://datastudio.google.com/reporting/43acd4c3-b66c-448d-8706-d049e6faea8a
 - **Operational Metrics Evaluated:** Transaction Approval Velocity, High-Risk System Rejection Index, Variable Income Audit Rates.
