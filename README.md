@@ -22,7 +22,7 @@ A strict **Separation of Concerns (SoC)** framework was implemented to divide cl
 
 ### 2. Network Infrastructure Shield (`security-gateway.js`)
 * **Role:** Cloud Architecture & WAF Security Simulator.
-* **Skillsets:** **DDoS Resiliency & Dynamic Rate Limiting**. Implements a temporal `Timestamp Delta Check` establishing a strict **2-second velocity safety buffer**. Malicious multi-transaction flooding or automated bot sessions are immediately intercepted at the network gate (`SECURITY LOCKEDOUT`), preventing downstream server crash and optimizing cloud compute costs.
+* **Skillsets:** **DDoS Resiliency & Dynamic Rate Limiting**. Implements a temporal *Timestamp Delta Check* establishing a strict **2-second velocity safety buffer**. Malicious multi-transaction flooding or automated bot sessions are immediately intercepted at the network gate (`SECURITY LOCKEDOUT`), preventing downstream server crash and optimizing cloud compute costs.
 
 ### 3.  Core Banking Logic Server (`financial-core.js`)
 * **Role:** Backend Credit Rules Enforcement & Financial Auditing Engine.
