@@ -16,13 +16,13 @@ function handleIncomingTraffic() {
             resDiv.innerText = `Decision: SECURITY LOCKEDOUT\nDetails: Velocity Attack Intercepted at Network Layer! Interval: ${timeDifference}ms. Infrastructure protected.`;
             resDiv.style.background = "#ff9999";
             
-            console.error(`🚨 WAF Shield Alert: Micro-transaction flooding intercepted. Execution aborted before touching Core Banking Server.`);
+            console.error(`WAF Shield Alert: Micro-transaction flooding intercepted. Execution aborted before touching Core Banking Server.`);
             return; // Sekat terus! Data takkan sampai ke core banking
         }
     }
     
     lastSubmissionTime = currentTime;
-    console.log("🟢 Network Layer Clean: Routing payload to Financial Core Banking Server...");
+    console.log("Network Layer Clean: Routing payload to Financial Core Banking Server...");
     
     // Jika trafik bersih dari bot, hantar data ke server pemprosesan kewangan
     executeFinancialCoreBanking();
