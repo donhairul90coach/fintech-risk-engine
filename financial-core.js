@@ -59,9 +59,9 @@ function displayFinalDecision(status, reason) {
     }
 }
 
-// 🔥 FUNGSI WEBHOOK UTAMA: BERSIH, TERASING, DAN URL DIKUNCI MATI PADA GOOGLE WEB APP
+// FUNGSI WEBHOOK UTAMA: BERSIH, TERASING, DAN URL DIKUNCI MATI PADA GOOGLE WEB APP
 function sendDataToCloudLive(income, debt, dti, employment, request, status) {
-    let webAppUrl = "https://script.google.com/macros/s/AKfycbyjDPc8LSGE3S7ROU6tUNU8SWq_c8Z6EhFOQCMsiBX9KMGQYvzIQBfKLaKaPAD2znoEYw/exec"; 
+    let webAppUrl = "https://script.google.com/macros/s/AKfycbwwb8M1pP8XfNaWIbL4lUPQClkHWsz9yYMweNKCfXpBaqZqGpJ8stX_dkpcKjm5CYeIvQ/exec"; 
 
     let payload = {
         income: income,
