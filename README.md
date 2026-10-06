@@ -1,9 +1,9 @@
 # Enterprise Credit Risk & Compliance Evaluation Engine
 
 ##  Live Interactive Deployments (Production Links)
-* **Live Web Application URL (Frontend Gateway):** 👉 [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
-* **Executive Real-Time Risk Analytics Dashboard:** 👉 [View Live Looker Studio BI Dashboard](https://datastudio.google.com/reporting/43acd4c3-b66c-448d-8706-d049e6faea8a)
-* **Core Architecture Source Code (Repository):** 👉 [View GitHub Source Code Repository](https://github.com/donhairul90coach/fintech-risk-engine)
+* **Live Web Application URL (Frontend Gateway):**  [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
+* **Executive Real-Time Risk Analytics Dashboard:**  [View Live Looker Studio BI Dashboard](https://datastudio.google.com/reporting/43acd4c3-b66c-448d-8706-d049e6faea8a)
+* **Core Architecture Source Code (Repository):**  [View GitHub Source Code Repository](https://github.com/donhairul90coach/fintech-risk-engine)
 
 
 ---
@@ -38,7 +38,7 @@ A strict **Separation of Concerns (SoC)** framework was implemented to divide cl
 
 ---
 
-## 🛠️ System Technology Stack
+## System Technology Stack
 - **Development Languages:** HTML5, CSS3, Vanilla JavaScript (ES6 Module Structure)
 - **Data Engineering Integration:** Cloud Webhook API, Google Apps Script Data Ingestion
 - **Data Warehousing Sandbox:** Structured Tabular Spreadsheet Matrix (.CSV Framework)
