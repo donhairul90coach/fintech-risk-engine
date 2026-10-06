@@ -1,58 +1,22 @@
-// Layer 2: Core Banking Risk & Compliance Assessment Server
-function executeFinancialCoreBanking() {
-    let income = parseFloat(document.getElementById('income').value);
-    let debt = parseFloat(document.getElementById('debt').value);
-    let employment = document.getElementById('employment').value;
-    let request = parseFloat(document.getElementById('request').value);
-
-    let dti = (debt / income) * 100;
-    let status = "APPROVED";
-    let reason = "Compliance standards met.";
-
-    // NEW FILTER STEP 2: Had Minimum Pinjaman & Penapisan ROI Kewangan
-    // Mana-mana permohonan di bawah RM1,000 dianggap sebagai sifar ROI atau cubaan troll
-    if (request < 1000) {
-        status = "REJECTED";
-        reason = `Negative ROI Trigger: Requested limit (RM ${request}) is below the institutional floor of RM 1,000. System terminated to prevent database bloat.`;
-        
-        // Paparkan amaran di skrin dan kemas kini log telemetry
-        displayFinalDecision(status, reason);
-        logs.push({ income, debt, dti: dti.toFixed(2), employment, request, status });
-        console.warn("System Audit Alert: Low-yield application auto-rejected at core level.");
-        return; // Hentikan proses serta-merta, jangan teruskan pengiraan lain!
-    }
-
-    // 2. Peraturan Had Kelayakan Kewangan Biasa
-    if (dti > 45) {
-        status = "REJECTED";
-        reason = "High Credit Risk: Debt-to-Income exceeds 45%.";
-    } else if (employment === "FREELANCE" && dti > 30) {
-        status = "FLAGGED FOR MANUAL AUDIT";
-        reason = "Variable income deviation detected.";
-    }
-
-    // 3. Peraturan Had Maksima 3 Kali Gaji
-    if (request > (income * 3) && status === "APPROVED") {
-        status = "LIMIT CAP APPLIED";
-        reason = `Requested limit adjusted to maximum threshold: RM ${income * 3}`;
-    }
-
-    // Panggil fungsi untuk paparkan keputusan dan simpan telemetry log
-    displayFinalDecision(status, reason);
-    logs.push({ income, debt, dti: dti.toFixed(2), employment, request, status });
-    console.log("Core Telemetry Updated: Data successfully piped for Looker Studio ingestion.");
-}
-
-// Fungsi pembantu untuk menguruskan paparan kosmetik UI
-function displayFinalDecision(status, reason) {
-    let resDiv = document.getElementById('result');
-    resDiv.innerText = `Decision: ${status}\nDetails: ${reason}`;
+// FUNGSI WEBHOOK UTAMA: TEMBUK DATA TERUS KE INTERNET SECARA LIVE
+function sendDataToCloudLive(income, debt, dti, employment, request, status) {
     
-    if (status === "REJECTED") {
-        resDiv.style.background = "#f8d7da"; // Merah jambu soft untuk keputusan reject biasa/ROI
-    } else if (status.includes("AUDIT")) {
-        resDiv.style.background = "#fff3cd"; // Kuning soft untuk manual audit
-    } else {
-        resDiv.style.background = "#d4edda"; // Hijau soft untuk kelulusan
-    }
+    // 🔥 DAFI BERSIH: Dah ditutup dengan tanda "" yang betul dan huruf 'I' hantu di hujung dah dibuang!
+    let webAppUrl = "https://script.google.com/macros/s/AKfycbyjDPc8LSGE3S7ROU6tUNU8SWq_c8Z6EhFOQCMsiBX9KMGQYvzIQBfKLaKaPAD2znoEYw/exec"; 
+
+    let payload = {
+        income: income,
+        debt: debt,
+        dti: dti,
+        employment: employment,
+        request: request,
+        status: status
+    };
+
+    fetch(webAppUrl, {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    .then(response => console.log("🟢 Data Berjaya Tembak Ke Google Sheets Live!"))
+    .catch(error => console.error("🔴 Gagal hantar data:", error));
 }
