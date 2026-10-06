@@ -20,47 +20,18 @@
             <option value="FREELANCE">Freelance / Variable Income</option>
         </select>
         <input type="number" id="request" placeholder="Requested Credit Limit (RM)">
-        <button onclick="processApplication()">Evaluate System Risk</button>
+        
+        <!-- Pintu Utama: Trafik akan lalui Security Gateway dahulu -->
+        <button onclick="handleIncomingTraffic()">Evaluate System Risk</button>
         <div id="result"></div>
     </div>
 
+    <!-- Struktur Pengasingan Fail Industri (Separation of Concerns) -->
+    <script src="security-gateway.js"></script>
+    <script src="financial-core.js"></script>
+    
     <script>
-        let logs = []; // Stores telemetry data for Looker Studio
-
-        function processApplication() {
-            let income = parseFloat(document.getElementById('income').value);
-            let debt = parseFloat(document.getElementById('debt').value);
-            let employment = document.getElementById('employment').value;
-            let request = parseFloat(document.getElementById('request').value);
-
-            let dti = (debt / income) * 100;
-            let status = "APPROVED";
-            let reason = "Compliance standards met.";
-
-            // Strict Anti-Fraud / Business Rules
-            if (dti > 45) {
-                status = "REJECTED";
-                reason = "High Risk: Debt-to-Income exceeds 45%.";
-            } else if (employment === "FREELANCE" && dti > 30) {
-                status = "FLAGGED FOR MANUAL AUDIT";
-                reason = "Variable income deviation detected.";
-            }
-
-            if (request > (income * 3) && status === "APPROVED") {
-                status = "LIMIT CAP APPLIED";
-                reason = `Requested limit adjusted to maximum threshold: RM ${income * 3}`;
-            }
-
-            // Display Output
-            let resDiv = document.getElementById('result');
-            resDiv.innerText = `Decision: ${status}\nDetails: ${reason}`;
-            resDiv.style.background = status === "REJECTED" ? "#f8d7da" : "#d4edda";
-
-            // Push clean raw data structured perfectly for Looker Studio
-            logs.push({ income, debt, dti: dti.toFixed(2), employment, request, status });
-            console.log("Telemetry Logs:", JSON.stringify(logs));
-        }
+        let logs = []; // Global telemetry log matrix
     </script>
 </body>
 </html>
-
