@@ -18,9 +18,28 @@ function executeFinancialCoreBanking() {
         displayFinalDecision(status, reason);
         logs.push({ income, debt, dti: dti.toFixed(2), employment, request, status });
         
-        // Tembak data ke Google Sheets di belakang tabir secara senyap
-        sendDataToCloudLive(income, debt, dti.toFixed(2), employment, request, status);
-        return; 
+        // 🔥 FUNGSI WEBHOOK UTAMA: DAH DIBETULKAN SUSUNAN UNTUK MASUK KOTAK SHEET DENGAN TEPAT
+function sendDataToCloudLive(income, debt, dti, employment, request, status) {
+    let webAppUrl = "https://google.com"; 
+
+    // Susunan payload ini diselaraskan tepat mengikut lajur A (Income) hingga F (Status)
+    let payload = {
+        income: income,
+        debt: debt,
+        dti: dti,
+        employment: employment,
+        request: request,
+        status: status
+    };
+
+    fetch(webAppUrl, {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    .then(response => console.log("🟢 Data Berjaya Tembak Ke Google Sheets Live!"))
+    .catch(error => console.error("🔴 Gagal hantar data:", error));
+}
+
     }
 
     // 2. Peraturan Had Kelayakan Kewangan Biasa
