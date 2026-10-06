@@ -1,9 +1,9 @@
 # 🏦 Enterprise Credit Risk & Compliance Evaluation Engine
 
 ## 🚀 Live Interactive Deployments (Production Links)
-* **Live Web Application URL (Frontend Gateway):** 👉 [Launch Live Web Application](https://github.io)
+* **Live Web Application URL (Frontend Gateway):** 👉 [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
 * **Executive Real-Time Risk Analytics Dashboard:** 👉 [View Live Looker Studio BI Dashboard](https://datastudio.google.com/reporting/43acd4c3-b66c-448d-8706-d049e6faea8a)
-* **Core Architecture Source Code (Repository):** 👉 [View GitHub Source Code Repository](https://donhairul90coach.github.io/fintech-risk-engine/)
+* **Core Architecture Source Code (Repository):** 👉 [View GitHub Source Code Repository]
 
 
 ---
