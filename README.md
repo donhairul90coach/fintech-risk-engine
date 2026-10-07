@@ -20,7 +20,7 @@
 
 ### 3. Automated Underwriting Engine (`financial-core.js`)
 * **Functional Role:** Policy enforcement engine for credit risk assessment and commercial margin compliance.
-* **Technical Implementation:** Executes programmatic evaluation of risk metrics within sub-16ms deterministic processing loops. Enforces hard-coded conditional parameters to calculate Debt-to-Income (DTI) thresholds, filter variable income deviations (Freelance risk profiling), and restrict exposure caps to a maximum of 3x the monthly income.
+* **Technical Implementation:** Executes programmatic evaluation of risk metrics within sub-16ms deterministic execution blocks. Enforces hard-coded conditional parameters to calculate Debt-to-Income (DTI) thresholds, filter variable income deviations (Freelance risk profiling), and restrict exposure caps to a maximum of 3x the monthly income.
 * **Business Logic & Cost Optimization:** Enforces an institutional **Minimum Credit Floor Threshold of RM 1,000** to eliminate negative-margin transaction processing overhead. Permitting applications below this operational floor yields a negative Return on Investment (ROI), as the projected interest yield fails to clear fixed operational overheads. Specifically, low-yield submissions fail to amortize transactional cloud database read/write costs, automated compliance notifications, downstream collection agency overhead, and legal/documentation expenses incurred during loan defaults. Filtering these low-margin requests at the application boundary maximizes institutional processing efficiency.
 
 
