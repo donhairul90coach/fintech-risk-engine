@@ -1,4 +1,5 @@
 # Enterprise Credit Risk & Compliance Evaluation Engine
+### Architectural Proof-of-Concept & Serverless Ingestion Prototype
 
 ## Live Interactive Deployments (Production Links)
 * **Live Web Application URL (Frontend Gateway):** [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
