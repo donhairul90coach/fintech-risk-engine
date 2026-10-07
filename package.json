@@ -1,0 +1,27 @@
+{
+  "name": "fintech-risk-engine",
+  "version": "1.0.0",
+  "description": "* **Live Web Application URL (Frontend Gateway):** [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)\r * **Executive Real-Time Risk Analytics Dashboard:** [View Live Looker Studio BI Dashboard](https://datastudio.google.com/reporting/43acd4c3-b66c-448d-8706-d049e6faea8a)\r * **Core Architecture Source Code (Repository):** [View GitHub Source Code Repository](https://github.com/donhairul90coach/fintech-risk-engine)",
+  "main": "financial-core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donhairul90coach/fintech-risk-engine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/donhairul90coach/fintech-risk-engine/issues"
+  },
+  "homepage": "https://github.com/donhairul90coach/fintech-risk-engine#readme",
+  "dependencies": {
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.1",
+    "sqlite3": "^6.0.1"
+  }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Enterprise Risk & Compliance Engine</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f6f9; }
+        .container { background: white; padding: 30px; border-radius: 8px; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; font-weight: bold; cursor: pointer; }
+        #result { margin-top: 20px; padding: 15px; border-radius: 4px; font-weight: bold; white-space: pre-line; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Risk Validation Engine</h2>
+        <!-- Membungkus input ke dalam form id riskForm untuk kawalan submit yang selamat -->
+        <form id="riskForm">
+            <input type="number" id="income" placeholder="Monthly Income (RM)" required>
+            <input type="number" id="debt" placeholder="Existing Monthly Debt (RM)" required>
+            <select id="employment">
+                <option value="PERMANENT">Permanent Employment</option>
+                <option value="FREELANCE">Freelance / Variable Income</option>
+            </select>
+            <input type="number" id="request" placeholder="Requested Credit Limit (RM)" required>
+            
+            <button type="submit">Evaluate System Risk</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('riskForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Menyekat halaman daripada memuat semula secara standard
+            
+            const resDiv = document.getElementById('result');
+            resDiv.innerText = "Memproses metrik transaksi secara selamat pada backend server...";
+            resDiv.style.background = "#e2e8f0";
+
+            // 1. Menserialisasikan Data Input Pemohon
+            const payload = {
+                income: parseFloat(document.getElementById('income').value),
+                debt: parseFloat(document.getElementById('debt').value),
+                employment: document.getElementById('employment').value,
+                request: parseFloat(document.getElementById('request').value)
+            };
+
+            try {
+                // 2. Menghantar Payload JSON ke Ingress API Gateway Server Node.js
+                const response = await fetch('/api/v1/risk-assessment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                // 3. Memaparkan Keputusan Sistem dan Maklum Balas UI Visual Dinamik
+                resDiv.innerText = `Decision: ${data.status}\nDetails: ${data.reason}`;
+                
+                // Pemetaan Warna Status UI
+                if (response.status === 200) {
+                    if (data.status === "APPROVED") {
+                        resDiv.style.background = "#d4edda"; // Hijau lembut (Lulus)
+                    } else if (data.status === "LIMIT CAP APPLIED") {
+                        resDiv.style.background = "#e0f2fe"; // Biru lembut (Had diselaraskan)
+                    } else {
+                        resDiv.style.background = "#fff3cd"; // Kuning lembut (Flagged Audit)
+                    }
+                } else if (response.status === 429) {
+                    resDiv.style.background = "#ff9999"; // Merah crimson (Rate limit aktif / Sekat bot)
+                    console.warn(`[API Gateway Alert]: ${data.reason}`);
+                } else {
+                    resDiv.style.background = "#f8d7da"; // Merah jambu lembut (Ditolak / Ralat input)
+                }
+
+            } catch (error) {
+                // Pengasingan Ralat Peringkat Klien (Fault Isolation)
+                console.error('🔴 Kegagalan Sambungan Gateway:', error.message);
+                resDiv.innerText = "Sistem Pengecualian: Gagal mewujudkan sambungan ke pelayan teras pengunderaitan.";
+                resDiv.style.background = "#f8d7da";
+            }
+        });
+    </script>
+</body>
+</html>
