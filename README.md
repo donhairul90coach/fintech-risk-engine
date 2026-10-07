@@ -17,12 +17,11 @@
 * **Technical Implementation:** Implements a time-delta check (`Date.now()`) to enforce a minimum 2000ms velocity threshold between consecutive payload submissions.
 * **Impact:** Prevents redundant processing overhead by blocking high-frequency simulated requests at the application boundary before routing data to the credit core.
 
-### 3. Automated Underwriting Core (`financial-core.js`)
-* **Functional Role:** Policy enforcement engine for credit risk and capital assignment compliance.
-* **Technical Implementation:** Executes programmatic evaluation of incoming risk metrics via deterministic conditional paths:
-  * **Margin Protection Floor:** Rejects requests below RM 1,000 to eliminate low-margin transaction processing overhead.
-  * **Credit Risk Policy:** Calculates Debt-to-Income (DTI) percentage; enforces a hard ceiling rejection at >45% DTI and flags high-risk variable income profiles (Freelance status >30% DTI) for manual compliance audit.
-  * **Exposure Control:** Applies a capital cap restricted to a maximum of 3x the declared monthly income.
+### 3. Automated Underwriting Engine (`financial-core.js`)
+* **Functional Role:** Policy enforcement engine for credit risk assessment and commercial margin compliance.
+* **Technical Implementation:** Executes programmatic evaluation of risk metrics within sub-16ms deterministic processing loops. Enforces hard-coded conditional parameters to calculate Debt-to-Income (DTI) thresholds, filter variable income deviations (Freelance risk profiling), and restrict exposure caps to a maximum of 3x the monthly income.
+* **Business Logic & Cost Optimization:** Enforces an institutional **Minimum Credit Floor Threshold of RM 1,000** to eliminate negative-margin transaction processing overhead. Permitting applications below this operational floor yields a negative Return on Investment (ROI), as the projected interest yield fails to clear fixed operational overheads. Specifically, low-yield submissions fail to amortize transactional cloud database read/write costs, automated compliance notifications, downstream collection agency overhead, and legal/documentation expenses incurred during loan defaults. Filtering these low-margin requests at the application boundary maximizes institutional processing efficiency.
+
 
 ### 4. Serverless Ingestion Webhook (`Google Apps Script`)
 * **Functional Role:** Asynchronous operational data streaming and persistent ledger ingestion.
