@@ -8,25 +8,28 @@
 ---
 
 ## System Architecture & Logic Pipeline
+### 1. Frontend UI Layer (`index.html`)
+* **Role:** Client-side form presentation and data capture.
+* **Technical Scope:** Engineered using lightweight HTML5 and a responsive CSS3 viewport configuration. It serializes user inputs prior to transmission to downstream layers, strictly adhering to the enterprise security mandate: *"Never trust frontend data validation alone."*
 
-### 1. Request Rate Limiting Middleware (`security-gateway.js`)
+### 2. Request Rate Limiting Middleware (`security-gateway.js`)
 * **Functional Role:** Client-side ingress throttling and bot mitigation.
 * **Technical Implementation:** Implements a time-delta check (`Date.now()`) to enforce a minimum 2000ms velocity threshold between consecutive payload submissions.
 * **Impact:** Prevents redundant processing overhead by blocking high-frequency simulated requests at the application boundary before routing data to the credit core.
 
-### 2. Automated Underwriting Core (`financial-core.js`)
+### 3. Automated Underwriting Core (`financial-core.js`)
 * **Functional Role:** Policy enforcement engine for credit risk and capital assignment compliance.
 * **Technical Implementation:** Executes programmatic evaluation of incoming risk metrics via deterministic conditional paths:
   * **Margin Protection Floor:** Rejects requests below RM 1,000 to eliminate low-margin transaction processing overhead.
   * **Credit Risk Policy:** Calculates Debt-to-Income (DTI) percentage; enforces a hard ceiling rejection at >45% DTI and flags high-risk variable income profiles (Freelance status >30% DTI) for manual compliance audit.
   * **Exposure Control:** Applies a capital cap restricted to a maximum of 3x the declared monthly income.
 
-### 3. Serverless Ingestion Webhook (`Google Apps Script`)
+### 4. Serverless Ingestion Webhook (`Google Apps Script`)
 * **Functional Role:** Asynchronous operational data streaming and persistent ledger ingestion.
 * **Technical Implementation:** Exposes an HTTP POST REST endpoint (`doPost`) that processes incoming JSON payloads via an asynchronous JavaScript Fetch API channel.
 * **Impact:** Parses serialized payloads and writes them directly into an append-only transaction log ledger, auto-indexing entry records sequentially via `getLastRow()`.
 
-### 4. Operations Telemetry Dashboard (`Looker Studio`)
+### 5. Operations Telemetry Dashboard (`Looker Studio`)
 * **Functional Role:** Business Intelligence reporting and risk distribution monitoring.
 * **Technical Implementation:** Directly maps the transactional log ledger into visual analytical components using scheduled data refresh polling.
 * **Impact:** Delivers immediate executive visibility into risk rejection ratios, volume distribution, and portfolio exposure metrics.
