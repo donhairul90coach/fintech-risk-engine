@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Executive Operations Telemetry Dashboard</title>
+    <script src="js/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f6f9; color: #333; }
+        .dashboard-container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .chart-box { max-width: 400px; margin: 30px auto; }
+        h2 { text-align: center; color: #1e293b; }
+        .nav-btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <a href="index.html" class="nav-btn">← Back to Input Gateway</a>
+        <h2>Risk Distribution Analytics Ledger</h2>
+        <div class="chart-box">
+            <canvas id="anomalyChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Pembolehubah global untuk menjejak objek carta
+        let myAnomalyChart = null;
+
+        async function renderTelemetry() {
+            try {
+                // Fetch data dengan pencegahan cache menggunakan (?t=...)
+                const response = await fetch('http://localhost:3000/api/v1/analytics-summary?t=' + Date.now());
+                const data = await response.json();
+
+                // Bersihkan carta lama jika wujud dalam memori browser
+                if (myAnomalyChart !== null) {
+                    myAnomalyChart.destroy();
+                }
+
+                // Ambil elemen canvas HTML
+                const ctx = document.getElementById('anomalyChart').getContext('2d');
+
+                // Bina carta pie baharu dengan data segar dari database
+                myAnomalyChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['APPROVED', 'REJECTED', 'LIMIT CAP APPLIED', 'FLAGGED FOR MANUAL AUDIT'],
+                        datasets: [{
+                            data: [data.approved, data.rejected, data.capApplied, data.audit],
+                            backgroundColor: ['#3b82f6', '#f97316', '#a855f7', '#84cc16']
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            } catch (error) {
+                console.error("🔴 Dashboard Exception Intercepted:", error);
+            }
+        }
+
+        // Jalankan fungsi sebaik sahaja halaman selesai dimuatkan
+        window.onload = renderTelemetry;
+    </script>
+</body>
+</html>

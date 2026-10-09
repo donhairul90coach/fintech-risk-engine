@@ -46,7 +46,8 @@
 
             try {
                 // 2. Menghantar Payload JSON ke Ingress API Gateway Server Node.js
-                const response = await fetch('/api/v1/risk-assessment', {
+                const response = await fetch('http://localhost:3000/api/v1/risk-assessment', {
+
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
