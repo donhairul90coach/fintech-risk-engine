@@ -1,45 +1,58 @@
 # Enterprise Credit Risk & Compliance Evaluation Engine
-### Architectural Proof-of-Concept & Serverless Ingestion Prototype
+### Decoupled Full-Stack Architecture & Secure Backend API Prototype
 
-## Live Interactive Deployments (Production Links)
-* **Live Web Application URL (Frontend Gateway):** [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
-* **Executive Real-Time Risk Analytics Dashboard:** [View Live Looker Studio BI Dashboard](https://datastudio.google.com/reporting/43acd4c3-b66c-448d-8706-d049e6faea8a)
+
+## Live Interactive Deployments
+* **Live Automated Interface Ingress (Frontend Gateway):** [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
 * **Core Architecture Source Code (Repository):** [View GitHub Source Code Repository](https://github.com/donhairul90coach/fintech-risk-engine)
 
 ---
 
+## Executive Project Overview
+This repository serves as a functional enterprise proof-of-concept for an automated credit risk underwriting engine and ingress policy pipeline. Designed to model deterministic high-volume financial applications, the system features a decoupled, multi-tier architecture executing strict data persistence integrity, perimeter network defense, environment isolation, and advanced fault-handling boundaries.
+
+Initially designed as a rapid, low-overhead browser framework to evaluate algorithmic compliance patterns, the entire core infrastructure has been refactored into a high-security server model to eliminate client-side manipulation vulnerabilities and database write concurrency constraints.
+
+---
+
 ## System Architecture & Logic Pipeline
-### 1. Frontend UI Layer (`index.html`)
-* **Role:** Client-side form presentation and data capture.
-* **Technical Scope:** Engineered using lightweight HTML5 and a responsive CSS3 viewport configuration. It serializes user inputs prior to transmission to downstream layers, strictly adhering to the enterprise security mandate: *"Never trust frontend data validation alone."*
 
-### 2. Request Rate Limiting Middleware (`security-gateway.js`)
-* **Functional Role:** Client-side ingress throttling and bot mitigation.
-* **Technical Implementation:** Implements a time-delta check (`Date.now()`) to enforce a minimum 2000ms velocity threshold between consecutive payload submissions.
-* **Impact:** Prevents redundant processing overhead by blocking high-frequency simulated requests at the application boundary before routing data to the credit core.
+### 1. Frontend UI Layer (`public/index.html`)
+* **Functional Role:** Client-side form presentation and data capture.
+* **Technical Scope:** Engineered using lightweight HTML5 and a responsive CSS3 viewport configuration. It serializes user input parameters prior to transmission to downstream backend layers, strictly adhering to the enterprise security mandate: "Never trust frontend data validation alone."
 
-### 3. Automated Underwriting Engine (`financial-core.js`)
-* **Functional Role:** Policy enforcement engine for credit risk assessment and commercial margin compliance.
-* **Technical Implementation:** Executes programmatic evaluation of risk metrics within sub-16ms deterministic execution blocks. Enforces hard-coded conditional parameters to calculate Debt-to-Income (DTI) thresholds, filter variable income deviations (Freelance risk profiling), and restrict exposure caps to a maximum of 3x the monthly income.
-* **Business Logic & Cost Optimization:** Enforces an institutional **Minimum Credit Floor Threshold of RM 1,000** to eliminate negative-margin transaction processing overhead. Permitting applications below this operational floor yields a negative Return on Investment (ROI), as the projected interest yield fails to clear fixed operational overheads. Specifically, low-yield submissions fail to amortize transactional cloud database read/write costs, automated compliance notifications, downstream collection agency overhead, and legal/documentation expenses incurred during loan defaults. Filtering these low-margin requests at the application boundary maximizes institutional processing efficiency.
+### 2. Ingress Network Security Tier (`server.js` via Express-Rate-Limit)
+* **Functional Role:** Server-side request throttling and defensive bot mitigation.
+* **Technical Implementation:** Deploys an isolated middleware pipeline enforcing a strict 2000ms velocity checking loop mapped against inbound user client IP addresses. High-frequency request patterns or automated scripts are intercepted at the server perimeter before executing downstream computing assets.
+* **Impact:** Prevents malicious micro-transaction flooding attacks, safeguarding application compute resources from automated processing degradation.
 
+### 3. Decoupled Compliance Configuration (`rules-config.json`)
+* **Functional Role:** Dynamic operational policy framework.
+* **Technical Implementation:** Completely decouples corporate underwriting guidelines from the execution runtime. Variables such as Debt-to-Income (DTI) caps, exposure limits, and minimum underwriting floors are stored dynamically within a centralized JSON schema.
+* **Impact:** Delivers agile business rule modifications. Risk officers can adjust financial risk thresholds instantly without modifying or redeploying the underlying server source code.
 
-### 4. Serverless Ingestion Webhook (`Google Apps Script`)
-* **Functional Role:** Asynchronous operational data streaming and persistent ledger ingestion.
-* **Technical Implementation:** Exposes an HTTP POST REST endpoint (`doPost`) that processes incoming JSON payloads via an asynchronous JavaScript Fetch API channel.
-* **Impact:** Parses serialized payloads and writes them directly into an append-only transaction log ledger, auto-indexing entry records sequentially via `getLastRow()`.
+### 4. Automated Underwriting Core (`server.js`)
+* **Functional Role:** Financial risk appraisal and programmatic underwriting compliance.
+* **Technical Implementation:** Evaluates serialized user transaction telemetry inside low-latency, non-blocking synchronous execution blocks processing in under 1 millisecond. Executes standard financial logic checks:
+  * **Debt-to-Income Ceilings:** Automatically calculates real-time DTI limits, enforcing a definitive rejection boundary at greater than 45% and flagging high-risk variable profiles (Freelance status greater than 30% DTI) for human audit trails.
+  * **Capital Exposure Mitigation:** Programmatically curtails capital assignment boundaries to a maximum threshold of 3x the applicant's validated monthly revenue.
 
-### 5. Operations Telemetry Dashboard (`Looker Studio`)
-* **Functional Role:** Business Intelligence reporting and risk distribution monitoring.
-* **Technical Implementation:** Directly maps the transactional log ledger into visual analytical components using scheduled data refresh polling.
-* **Impact:** Delivers immediate executive visibility into risk rejection ratios, volume distribution, and portfolio exposure metrics.
+### 5. Commercial Profitability & Margin Protection Logic
+* **Business Value Execution:** Enforces an institutional Minimum Credit Floor Threshold of RM 1,000 to eliminate negative-margin transaction processing. 
+* **Cost Amortization Rationale:** Processing micro-loans below this operational floor triggers a negative Return on Investment (ROI). The projected interest yield fails to clear fixed operational overheads, including backend database read/write operations, automated electronic notifications, downstream collection agency retainers, and legal/documentation expenses incurred during credit default anomalies. Filtering low-margin submissions at the ingress perimeter maximizes overall corporate processing efficiency.
+
+### 6. Relational Transaction Storage (`database.js` via SQLite)
+* **Functional Role:** Secure transactional ledger persistence.
+* **Technical Implementation:** Utilizes a fully normalized, relational SQL ledger table (`transaction_ledger`). The insertion module relies on secure Parameterized Queries (`INSERT INTO ... VALUES (?, ?, ?)`) mapping data sequentially via auto-incremented primary key allocations.
+* **Impact:** Fundamentally neutralizes SQL Injection (SQLi) attack vectors, guarantees data persistence integrity under concurrent request loads, and archives structured operational audit logs cleanly.
+
+---
 
 ## Technical Stack & Infrastructure Registry
-
-* **Core Interface & Scripting:** HTML5, CSS3, Vanilla JavaScript (ES6 Modular Architecture)
-* **Integration Tier:** Asynchronous REST HTTP Webhook Pipeline
-* **Serverless Backend Engine:** Google Apps Script Execution Environment
-* **Persistence Layer:** Normalized Tabular Datastore (Google Sheets Ledger)
-* **Business Intelligence Tier:** Google Looker Studio Operations Dashboard
-
+* **Backend Processing Runtime:** Node.js (V8 Execution Environment)
+* **API Gateway & Routing Tier:** Express.js Web Framework
+* **Security & Ingress Throttling:** Express-Rate-Limit (Token-Bucket Array)
+* **Persistence Layer:** Relational Storage Matrix (SQLite Engine)
+* **Configuration Layer:** Decoupled Polymorphic Policy Variables (JSON Framework)
+* **Environment Isolation:** Dotenv Environment Obfuscation Tier (`.env`)
 
