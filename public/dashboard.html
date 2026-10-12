@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Executive Operations Telemetry Dashboard</title>
-    <script src="js/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background: #f4f6f9; color: #333; }
         .dashboard-container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -21,19 +21,16 @@
     </div>
 
     <script>
-        // Pembolehubah global untuk menjejak objek carta
         let myAnomalyChart = null;
 
         async function renderTelemetry() {
             let data;
             try {
-                // Cuba fetch dari backend (Sama ada relative path atau localhost)
                 const response = await fetch('/api/v1/analytics-summary?t=' + Date.now());
-                if (!response.ok) throw new Error('Server not responding');
+                if (!response.ok) throw new Error('Server offline');
                 data = await response.json();
             } catch (error) {
-                console.warn(" Backend server not detected (GitHub Pages Mode). Rendering mock data.");
-                // Fallback Mock Data khas untuk GitHub Pages Demo
+                console.warn("Backend not reachable. Using fallback mock data.");
                 data = {
                     approved: 14,
                     rejected: 5,
@@ -42,15 +39,13 @@
                 };
             }
 
-                // Bersihkan carta lama jika wujud dalam memori browser
+            try {
                 if (myAnomalyChart !== null) {
                     myAnomalyChart.destroy();
                 }
 
-                // Ambil elemen canvas HTML
                 const ctx = document.getElementById('anomalyChart').getContext('2d');
 
-                // Bina carta pie baharu dengan data segar dari database
                 myAnomalyChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
@@ -64,12 +59,11 @@
                         responsive: true
                     }
                 });
-            } catch (error) {
-                console.error(" Dashboard Exception Intercepted:", error);
+            } catch (err) {
+                console.error("Chart Error:", err);
             }
         }
 
-        // Jalankan fungsi sebaik sahaja halaman selesai dimuatkan
         window.onload = renderTelemetry;
     </script>
 </body>
