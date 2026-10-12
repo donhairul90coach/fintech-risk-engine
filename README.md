@@ -22,18 +22,18 @@ Originally prototyped using cloud services (Google Sheets for data storage and L
 - **Server-Side Data Sanitization:** Validates all incoming payloads server-side (`parseFloat` and `NaN` checks) prior to processing to prevent invalid data execution.
 
 ### 2. Underwriting & Financial ROI Logic (`server.js` & `rules-config.json`)
-- **Minimum RM 1,000 Credit Floor:** Rejects loan requests under RM 1,000. Processing micro-loans below this threshold results in negative ROI due to fixed server overhead and operational maintenance costs[cite: 1].
-- **Automated DTI Calculation:** Calculates real-time DTI ratios[cite: 1]. Requests exceeding 45% DTI are rejected, while freelance applicants with DTI > 30% are flagged for manual audit[cite: 1].
-- **Capital Exposure Cap:** Limits total approved credit exposure to a maximum of 3x the applicant's verified monthly income[cite: 1].
-- **Externalized Configuration:** Underwriting rules are stored in `rules-config.json`, allowing risk parameters to be updated dynamically without altering core application code[cite: 1].
+- **Minimum RM 1,000 Credit Floor:** Rejects loan requests under RM 1,000. Processing micro-loans below this threshold results in negative ROI due to fixed server overhead and operational maintenance costs.
+- **Automated DTI Calculation:** Calculates real-time DTI ratios. Requests exceeding 45% DTI are rejected, while freelance applicants with DTI > 30% are flagged for manual audit.
+- **Capital Exposure Cap:** Limits total approved credit exposure to a maximum of 3x the applicant's verified monthly income.
+- **Externalized Configuration:** Underwriting rules are stored in `rules-config.json`, allowing risk parameters to be updated dynamically without altering core application code.
 
 ### 3. Database Persistence & SQL Security (`database.js`)
-- **Relational Ledger:** Stores transaction records in a SQLite database (`ledger.db`)[cite: 1].
-- **SQL Injection Prevention:** Uses parameterized SQL queries (`db.run(sql, params)`) to neutralize SQL Injection (SQLi) risks and preserve ledger integrity[cite: 1].
+- **Relational Ledger:** Stores transaction records in a SQLite database (`ledger.db`).
+- **SQL Injection Prevention:** Uses parameterized SQL queries (`db.run(sql, params)`) to neutralize SQL Injection (SQLi) risks and preserve ledger integrity.
 
 ### 4. Interactive Frontend & Analytics (`public/`)
-- **User Interface (`index.html`):** Form interface for entering income, existing debt, employment type, and requested limit[cite: 2, 4].
-- **Dashboard Telemetry (`dashboard.html`):** Visualizes approval distributions (Approved, Rejected, Limit Cap Applied, Manual Audit) using **Chart.js**, fetched directly from the `/api/v1/analytics-summary` endpoint[cite: 3, 4].
+- **User Interface (`index.html`):** Form interface for entering income, existing debt, employment type, and requested limit.
+- **Dashboard Telemetry (`dashboard.html`):** Visualizes approval distributions (Approved, Rejected, Limit Cap Applied, Manual Audit) using **Chart.js**, fetched directly from the `/api/v1/analytics-summary` endpoint.
 
 ---
 
@@ -42,10 +42,10 @@ Originally prototyped using cloud services (Google Sheets for data storage and L
 | Layer | Technology |
 |---|---|
 | **Runtime Environment** | Node.js (v18+) |
-| **Web Framework** | Express.js (v5)[cite: 1] |
-| **Database** | SQLite3[cite: 1] |
-| **Security & Middleware** | Express-Rate-Limit (2s Rule), Dotenv[cite: 1] |
-| **Frontend & Analytics** | HTML5, CSS3, JavaScript (Fetch API, Chart.js)[cite: 2, 4] |
+| **Web Framework** | Express.js (v5) |
+| **Database** | SQLite3 |
+| **Security & Middleware** | Express-Rate-Limit (2s Rule), Dotenv |
+| **Frontend & Analytics** | HTML5, CSS3, JavaScript (Fetch API, Chart.js) |
 
 ---
 
