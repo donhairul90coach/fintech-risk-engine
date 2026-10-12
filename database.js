@@ -1,11 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Mengarahkan SQLite untuk mencipta fail pangkalan data local bernama ledger.db
+// arahan kepada SQLite untuk mencipta fail pangkalan data local bernama ledger.db
 const dbPath = path.resolve(__dirname, 'ledger.db');
 const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) return console.error('🔴 Kegagalan Sambungan Database:', err.message);
-    console.log('🟢 Lapisan Persistence SQL Aktif: Bersambung ke ledger.db');
+    if (err) return console.error('Kegagalan Sambungan Database:', err.message);
+    console.log(' Lapisan Persistence SQL Aktif: Bersambung ke ledger.db');
 });
 
 

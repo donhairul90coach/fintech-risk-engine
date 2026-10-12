@@ -65,19 +65,19 @@ app.post('/api/v1/risk-assessment', ingressRateLimiter, (req, res) => {
 
         db.run(sql, params, function (err) {
             if (err) {
-                console.error('🔴 Transaction Log Fault:', err.message);
+                console.error(' Transaction Log Fault:', err.message);
                 return res.status(500).json({ status: "PERSISTENCE_FAULT", reason: "Internal ledger insertion exception encountered." });
             }
-            console.log(`🟢 System Audited: Transaction committed to row index ${this.lastID}.`);
+            console.log(`System Audited: Transaction committed to row index ${this.lastID}.`);
             return res.status(200).json({ status: decisionStatus, reason: reason });
         });
 
     } catch (error) {
-        console.error('🔴 Critical Engine System Exception:', error.message);
+        console.error(' Critical Engine System Exception:', error.message);
         return res.status(500).json({ status: "CORE_SERVER_ERROR", reason: "Fatal runtime execution thread collapse intercepted." });
     }
 });
-// 📊 PRIVATE ANALYTICS DATA INGESTION FOR EXECUTIVE DASHBOARD
+//  PRIVATE ANALYTICS DATA INGESTION FOR EXECUTIVE DASHBOARD
 app.get('/api/v1/analytics-summary', (req, res) => {
     const sql = `
         SELECT 
@@ -90,7 +90,7 @@ app.get('/api/v1/analytics-summary', (req, res) => {
 
     db.get(sql, [], (err, row) => {
         if (err) {
-            console.error('🔴 SQL Aggregate Fetch Fault:', err.message);
+            console.error(' SQL Aggregate Fetch Fault:', err.message);
             return res.status(500).json({ approved: 0, rejected: 0, capApplied: 0, audit: 0 });
         }
         
@@ -105,5 +105,5 @@ app.get('/api/v1/analytics-summary', (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server Pengunderaitan Enterprise Berjalan pada Port Selamat: ${PORT}`);
+    console.log(` Server Pengunderaitan Enterprise Berjalan pada Port Selamat: ${PORT}`);
 });
