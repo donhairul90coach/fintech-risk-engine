@@ -61,3 +61,40 @@ Originally prototyped using cloud services (Google Sheets for data storage and L
    ```bash
    git clone [https://github.com/donhairul90coach/fintech-risk-engine.git](https://github.com/donhairul90coach/fintech-risk-engine.git)
    cd fintech-risk-engine
+2. **Install dependencies:**
+   ```bash
+   npm install
+3. **Configure Environment Variables:** Create a .env file in the root directory:
+   ```bash
+   PORT=3000
+4. **Run the server:**
+   ```bash
+   node server.js
+5. **Access the application:**
+   Open your browser and navigate to http://localhost:3000.
+   
+## API Reference
+**1. Evaluate Risk Assessment**
+Endpoint: POST /api/v1/risk-assessment
+Headers: Content-Type: application/json
+Request Body:
+ {
+  "income": 5000,
+  "debt": 1200,
+  "employment": "PERMANENT",
+  "request": 10000
+}
+Response (200 OK):
+{
+  "status": "APPROVED",
+  "reason": "Compliance standards fully met."
+}
+2. Executive Analytics Summary
+Endpoint: GET /api/v1/analytics-summary
+Response (200 OK):
+{
+  "approved": 15,
+  "rejected": 5,
+  "capApplied": 3,
+  "audit": 2
+}
