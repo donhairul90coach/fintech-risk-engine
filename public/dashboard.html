@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Executive Operations Telemetry Dashboard</title>
+    <!-- CDN Rasmi Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background: #f4f6f9; color: #333; }
         .dashboard-container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .chart-box { max-width: 400px; margin: 30px auto; }
+        .chart-box { max-width: 400px; margin: 30px auto; min-height: 300px; }
         h2 { text-align: center; color: #1e293b; }
         .nav-btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin-bottom: 20px; }
     </style>
@@ -25,12 +28,18 @@
 
         async function renderTelemetry() {
             let data;
+            
+            // 1. Ambil Data dari API atau Fallback
             try {
                 const response = await fetch('/api/v1/analytics-summary?t=' + Date.now());
-                if (!response.ok) throw new Error('Server offline');
+                if (!response.ok) {
+                    throw new Error('API server unreachable');
+                }
                 data = await response.json();
+                console.log("✅ Live API Data Loaded:", data);
             } catch (error) {
-                console.warn("Backend not reachable. Using fallback mock data.");
+                console.warn("⚠️ Backend offline. Activating Mock Data Fallback for GitHub Pages.");
+                // Mock Data Fallback
                 data = {
                     approved: 14,
                     rejected: 5,
@@ -39,13 +48,19 @@
                 };
             }
 
+            // 2. Lukis Carta Pie
             try {
+                const canvas = document.getElementById('anomalyChart');
+                if (!canvas) {
+                    console.error("❌ Canvas element 'anomalyChart' not found.");
+                    return;
+                }
+
                 if (myAnomalyChart !== null) {
                     myAnomalyChart.destroy();
                 }
 
-                const ctx = document.getElementById('anomalyChart').getContext('2d');
-
+                const ctx = canvas.getContext('2d');
                 myAnomalyChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
@@ -56,15 +71,18 @@
                         }]
                     },
                     options: {
-                        responsive: true
+                        responsive: true,
+                        maintainAspectRatio: true
                     }
                 });
-            } catch (err) {
-                console.error("Chart Error:", err);
+                console.log("📊 Chart rendered successfully!");
+            } catch (chartErr) {
+                console.error("❌ Exception during chart initialization:", chartErr);
             }
         }
 
-        window.onload = renderTelemetry;
+        // Jalankan apabila DOM sedia
+        document.addEventListener("DOMContentLoaded", renderTelemetry);
     </script>
 </body>
 </html>
