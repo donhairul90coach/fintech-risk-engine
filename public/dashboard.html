@@ -25,10 +25,22 @@
         let myAnomalyChart = null;
 
         async function renderTelemetry() {
+            let data;
             try {
-                // Fetch data dengan pencegahan cache menggunakan (?t=...)
-                const response = await fetch('http://localhost:3000/api/v1/analytics-summary?t=' + Date.now());
-                const data = await response.json();
+                // Cuba fetch dari backend (Sama ada relative path atau localhost)
+                const response = await fetch('/api/v1/analytics-summary?t=' + Date.now());
+                if (!response.ok) throw new Error('Server not responding');
+                data = await response.json();
+            } catch (error) {
+                console.warn(" Backend server not detected (GitHub Pages Mode). Rendering mock data.");
+                // Fallback Mock Data khas untuk GitHub Pages Demo
+                data = {
+                    approved: 14,
+                    rejected: 5,
+                    capApplied: 3,
+                    audit: 2
+                };
+            }
 
                 // Bersihkan carta lama jika wujud dalam memori browser
                 if (myAnomalyChart !== null) {
@@ -53,7 +65,7 @@
                     }
                 });
             } catch (error) {
-                console.error("🔴 Dashboard Exception Intercepted:", error);
+                console.error(" Dashboard Exception Intercepted:", error);
             }
         }
 
