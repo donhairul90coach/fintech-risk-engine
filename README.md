@@ -1,58 +1,116 @@
-# Enterprise Credit Risk & Compliance Evaluation Engine
-### Decoupled Full-Stack Architecture & Secure Backend API Prototype
+# Credit Risk Evaluation Engine & Web Application
+A Full-Stack Node.js REST API & Application for Automated Credit Risk Assessment.
 
-
-## Live Interactive Deployments
-* **Live Automated Interface Ingress (Frontend Gateway):** [Launch Live Web Application](https://donhairul90coach.github.io/fintech-risk-engine/)
-* **Core Architecture Source Code (Repository):** [View GitHub Source Code Repository](https://github.com/donhairul90coach/fintech-risk-engine)
-
----
-
-## Executive Project Overview
-This repository serves as a functional enterprise proof-of-concept for an automated credit risk underwriting engine and ingress policy pipeline. Designed to model deterministic high-volume financial applications, the system features a decoupled, multi-tier architecture executing strict data persistence integrity, perimeter network defense, environment isolation, and advanced fault-handling boundaries.
-
-Initially designed as a rapid, low-overhead browser framework to evaluate algorithmic compliance patterns, the entire core infrastructure has been refactored into a high-security server model to eliminate client-side manipulation vulnerabilities and database write concurrency constraints.
+## Demo & Repository
+- **Live Frontend Demo:** [Launch Application](https://donhairul90coach.github.io/fintech-risk-engine/public/)
+- **Live Dashboard Demo:** [Launch Dashboard](https://donhairul90coach.github.io/fintech-risk-engine/public/dashboard.html)
+- **GitHub Repository:** [View Source Code](https://github.com/donhairul90coach/fintech-risk-engine)
 
 ---
 
-## System Architecture & Logic Pipeline
+## Overview
+This project is a full-stack RESTful web application built with **Node.js**, **Express**, **SQLite**, and **Chart.js**. It automates credit risk evaluation by calculating Debt-to-Income (DTI) ratios, enforcing business rule limits, and logging transaction decisions.
 
-### 1. Frontend UI Layer (`public/index.html`)
-* **Functional Role:** Client-side form presentation and data capture.
-* **Technical Scope:** Engineered using lightweight HTML5 and a responsive CSS3 viewport configuration. It serializes user input parameters prior to transmission to downstream backend layers, strictly adhering to the enterprise security mandate: "Never trust frontend data validation alone."
-
-### 2. Ingress Network Security Tier (`server.js` via Express-Rate-Limit)
-* **Functional Role:** Server-side request throttling and defensive bot mitigation.
-* **Technical Implementation:** Deploys an isolated middleware pipeline enforcing a strict 2000ms velocity checking loop mapped against inbound user client IP addresses. High-frequency request patterns or automated scripts are intercepted at the server perimeter before executing downstream computing assets.
-* **Impact:** Prevents malicious micro-transaction flooding attacks, safeguarding application compute resources from automated processing degradation.
-
-### 3. Decoupled Compliance Configuration (`rules-config.json`)
-* **Functional Role:** Dynamic operational policy framework.
-* **Technical Implementation:** Completely decouples corporate underwriting guidelines from the execution runtime. Variables such as Debt-to-Income (DTI) caps, exposure limits, and minimum underwriting floors are stored dynamically within a centralized JSON schema.
-* **Impact:** Delivers agile business rule modifications. Risk officers can adjust financial risk thresholds instantly without modifying or redeploying the underlying server source code.
-
-### 4. Automated Underwriting Core (`server.js`)
-* **Functional Role:** Financial risk appraisal and programmatic underwriting compliance.
-* **Technical Implementation:** Evaluates serialized user transaction telemetry inside low-latency, non-blocking synchronous execution blocks processing in under 1 millisecond. Executes standard financial logic checks:
-  * **Debt-to-Income Ceilings:** Automatically calculates real-time DTI limits, enforcing a definitive rejection boundary at greater than 45% and flagging high-risk variable profiles (Freelance status greater than 30% DTI) for human audit trails.
-  * **Capital Exposure Mitigation:** Programmatically curtails capital assignment boundaries to a maximum threshold of 3x the applicant's validated monthly revenue.
-
-### 5. Commercial Profitability & Margin Protection Logic
-* **Business Value Execution:** Enforces an institutional Minimum Credit Floor Threshold of RM 1,000 to eliminate negative-margin transaction processing. 
-* **Cost Amortization Rationale:** Processing micro-loans below this operational floor triggers a negative Return on Investment (ROI). The projected interest yield fails to clear fixed operational overheads, including backend database read/write operations, automated electronic notifications, downstream collection agency retainers, and legal/documentation expenses incurred during credit default anomalies. Filtering low-margin submissions at the ingress perimeter maximizes overall corporate processing efficiency.
-
-### 6. Relational Transaction Storage (`database.js` via SQLite)
-* **Functional Role:** Secure transactional ledger persistence.
-* **Technical Implementation:** Utilizes a fully normalized, relational SQL ledger table (`transaction_ledger`). The insertion module relies on secure Parameterized Queries (`INSERT INTO ... VALUES (?, ?, ?)`) mapping data sequentially via auto-incremented primary key allocations.
-* **Impact:** Fundamentally neutralizes SQL Injection (SQLi) attack vectors, guarantees data persistence integrity under concurrent request loads, and archives structured operational audit logs cleanly.
+### System Evolution
+Originally prototyped using cloud services (Google Sheets for data storage and Looker Studio for visual reporting), the core logic and persistence layers were refactored into a self-hosted **Node.js Express API** and **SQLite database** to enforce server-side validation, prevent unauthorized input tampering, and eliminate client-side limits.
 
 ---
 
-## Technical Stack & Infrastructure Registry
-* **Backend Processing Runtime:** Node.js (V8 Execution Environment)
-* **API Gateway & Routing Tier:** Express.js Web Framework
-* **Security & Ingress Throttling:** Express-Rate-Limit (Token-Bucket Array)
-* **Persistence Layer:** Relational Storage Matrix (SQLite Engine)
-* **Configuration Layer:** Decoupled Polymorphic Policy Variables (JSON Framework)
-* **Environment Isolation:** Dotenv Environment Obfuscation Tier (`.env`)
+## Architecture & Technical Features
 
+### 1. Ingress Protection & Security Protocols (`server.js`)
+- **2-Second Rate Limiting Window:** Configured `express-rate-limit` to restrict requests to a maximum of 1 request per 2 seconds (2000ms) per IP address. This defends the server perimeter against automated bots, micro-transaction flooding, and spam.
+- **Server-Side Data Sanitization:** Validates all incoming payloads server-side (`parseFloat` and `NaN` checks) prior to processing to prevent invalid data execution.
+
+### 2. Underwriting & Financial ROI Logic (`server.js` & `rules-config.json`)
+- **Minimum RM 1,000 Credit Floor:** Rejects loan requests under RM 1,000. Processing micro-loans below this threshold results in negative ROI due to fixed server overhead and operational maintenance costs.
+- **Automated DTI Calculation:** Calculates real-time DTI ratios. Requests exceeding 45% DTI are rejected, while freelance applicants with DTI > 30% are flagged for manual audit.
+- **Capital Exposure Cap:** Limits total approved credit exposure to a maximum of 3x the applicant's verified monthly income.
+- **Externalized Configuration:** Underwriting rules are stored in `rules-config.json`, allowing risk parameters to be updated dynamically without altering core application code.
+
+### 3. Database Persistence & SQL Security (`database.js`)
+- **Relational Ledger:** Stores transaction records in a SQLite database (`ledger.db`).
+- **SQL Injection Prevention:** Uses parameterized SQL queries (`db.run(sql, params)`) to neutralize SQL Injection (SQLi) risks and preserve ledger integrity.
+
+### 4. Interactive Frontend & Analytics (`public/`)
+- **User Interface (`index.html`):** Form interface for entering income, existing debt, employment type, and requested limit.
+- **Dashboard Telemetry (`dashboard.html`):** Visualizes approval distributions (Approved, Rejected, Limit Cap Applied, Manual Audit) using **Chart.js**, fetched directly from the `/api/v1/analytics-summary` endpoint.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Runtime Environment** | Node.js (v18+) |
+| **Web Framework** | Express.js (v5) |
+| **Database** | SQLite3 |
+| **Security & Middleware** | Express-Rate-Limit (2s Rule), Dotenv |
+| **Frontend & Analytics** | HTML5, CSS3, JavaScript (Fetch API, Chart.js) |
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js installed on your machine.
+- npm (Node Package Manager).
+
+### Installation & Local Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/donhairul90coach/fintech-risk-engine.git](https://github.com/donhairul90coach/fintech-risk-engine.git)
+   cd fintech-risk-engine
+2. **Install dependencies:**
+   ```bash
+   npm install
+3. **Configure Environment Variables:** Create a .env file in the root directory:
+
+   `PORT=3000`
+5. **Run the server:**
+   ```bash
+   node server.js
+6. **Access the application:**
+
+   Open your browser and navigate to http://localhost:3000.
+   
+## API Reference
+**1. Evaluate Risk Assessment**
+
+- Endpoint: `POST /api/v1/risk-assessment`
+
+- Headers: `Content-Type: application/json`
+
+- Request Body:
+```json
+
+ {
+  "income": 5000,
+  "debt": 1200,
+  "employment": "PERMANENT",
+  "request": 10000
+}
+```
+- Response (200 OK):
+```json
+
+{
+  "status": "APPROVED",
+  "reason": "Compliance standards fully met."
+}
+```
+
+**2. Executive Analytics Summary**
+
+- Endpoint: GET `/api/v1/analytics-summary`
+
+- Response (200 OK):
+```json
+{
+  "approved": 15,
+  "rejected": 5,
+  "capApplied": 3,
+  "audit": 2
+}
+```
