@@ -3,7 +3,7 @@ A Full-Stack Node.js REST API & Application for Automated Credit Risk Assessment
 
 ## Demo & Repository
 - **Live Frontend Demo:** [Launch Application](https://donhairul90coach.github.io/fintech-risk-engine/public/)
-- **Live Dashboard Demo:** [Launch Dashboard] (https://donhairul90coach.github.io/fintech-risk-engine/public/dashboard.html)
+- **Live Dashboard Demo:** [Launch Dashboard](https://donhairul90coach.github.io/fintech-risk-engine/public/dashboard.html)
 - **GitHub Repository:** [View Source Code](https://github.com/donhairul90coach/fintech-risk-engine)
 
 ---
