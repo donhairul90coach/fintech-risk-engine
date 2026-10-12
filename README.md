@@ -1,5 +1,5 @@
-# Credit Risk & Loan Evaluation Engine API
-A Full-Stack Node.js Web Application & REST API for Automated Credit Risk Assessment.
+# Credit Risk Evaluation Engine & Web Application
+A Full-Stack Node.js REST API & Application for Automated Credit Risk Assessment.
 
 ## Demo & Repository
 - **Live Frontend Demo:** [Launch Application](https://donhairul90coach.github.io/fintech-risk-engine/)
@@ -8,37 +8,32 @@ A Full-Stack Node.js Web Application & REST API for Automated Credit Risk Assess
 ---
 
 ## Overview
-This project is a RESTful web application built with **Node.js**, **Express**, and **SQLite**. It simulates an automated credit risk evaluation system that calculates an applicant's Debt-to-Income (DTI) ratio, validates loan requests against business rules, and stores decision logs in a database.
+This project is a full-stack RESTful web application built with **Node.js**, **Express**, **SQLite**, and **Chart.js**. It automates credit risk evaluation by calculating Debt-to-Income (DTI) ratios, enforcing business rule limits, and logging transaction decisions.
 
-Originally built as a client-side prototype, the core risk logic was refactored into a Node.js backend to ensure data integrity, prevent unauthorized input modification, and enforce server-side validation.
+### System Evolution
+Originally prototyped using cloud services (Google Sheets for data storage and Looker Studio for visual reporting), the core logic and persistence layers were refactored into a self-hosted **Node.js Express API** and **SQLite database** to enforce server-side validation, prevent unauthorized input tampering, and eliminate client-side limits.
 
 ---
 
-## System Architecture & Features
+## Architecture & Technical Features
 
-### 1. Frontend Interface (`public/index.html` & `public/dashboard.html`)
-- Serves a clean input form for applicants to submit income, debt, employment status, and requested loan amounts.
-- Includes an analytics dashboard that renders risk evaluation stats via Chart.js.
-- Implements basic input capture before sending data via HTTP POST requests to the backend.
+### 1. Ingress Protection & Security Protocols (`server.js`)
+- **2-Second Rate Limiting Window:** Configured `express-rate-limit` to restrict requests to a maximum of 1 request per 2 seconds (2000ms) per IP address. This defends the server perimeter against automated bots, micro-transaction flooding, and spam.
+- **Server-Side Data Sanitization:** Validates all incoming payloads server-side (`parseFloat` and `NaN` checks) prior to processing to prevent invalid data execution.
 
-### 2. API Rate Limiting & Input Protection (`server.js`)
-- Uses `express-rate-limit` middleware to prevent spam and brute-force submissions on API endpoints.
-- Validates data types server-side (`parseFloat`, checking for `NaN` values) to prevent malformed payload execution.
+### 2. Underwriting & Financial ROI Logic (`server.js` & `rules-config.json`)
+- **Minimum RM 1,000 Credit Floor:** Rejects loan requests under RM 1,000. Processing micro-loans below this threshold results in negative ROI due to fixed server overhead and operational maintenance costs[cite: 1].
+- **Automated DTI Calculation:** Calculates real-time DTI ratios[cite: 1]. Requests exceeding 45% DTI are rejected, while freelance applicants with DTI > 30% are flagged for manual audit[cite: 1].
+- **Capital Exposure Cap:** Limits total approved credit exposure to a maximum of 3x the applicant's verified monthly income[cite: 1].
+- **Externalized Configuration:** Underwriting rules are stored in `rules-config.json`, allowing risk parameters to be updated dynamically without altering core application code[cite: 1].
 
-### 3. Dynamic Business Rules Configuration (`rules-config.json`)
-- Stores business constraints (minimum loan limits, maximum DTI percentages, and income multipliers) in an external JSON configuration file.
-- Allows updates to risk rules without modifying or restarting application code.
+### 3. Database Persistence & SQL Security (`database.js`)
+- **Relational Ledger:** Stores transaction records in a SQLite database (`ledger.db`)[cite: 1].
+- **SQL Injection Prevention:** Uses parameterized SQL queries (`db.run(sql, params)`) to neutralize SQL Injection (SQLi) risks and preserve ledger integrity[cite: 1].
 
-### 4. Underwriting & Risk Assessment Engine (`server.js`)
-Evaluates input parameters against configured risk logic:
-* **Minimum Limit Check:** Rejects requests below RM 1,000 (minimum loan threshold).
-* **DTI Calculation:** Rejects applications with DTI exceeding 45% (or flags DTI > 30% for freelance applicants for manual audit).
-* **Credit Cap Enforcement:** Limits maximum credit approval to 3x the applicant's monthly income.
-
-### 5. Database Persistence & SQL Injection Protection (`database.js`)
-- Persists transaction history to a SQLite database (`ledger.db`).
-- Uses **parameterized SQL queries** (`db.run(sql, params)`) to prevent SQL Injection (SQLi) vulnerabilities.
-- Stores transaction timestamp, input data, calculated DTI, evaluation status, and audit reasons.
+### 4. Interactive Frontend & Analytics (`public/`)
+- **User Interface (`index.html`):** Form interface for entering income, existing debt, employment type, and requested limit[cite: 2, 4].
+- **Dashboard Telemetry (`dashboard.html`):** Visualizes approval distributions (Approved, Rejected, Limit Cap Applied, Manual Audit) using **Chart.js**, fetched directly from the `/api/v1/analytics-summary` endpoint[cite: 3, 4].
 
 ---
 
@@ -47,10 +42,10 @@ Evaluates input parameters against configured risk logic:
 | Layer | Technology |
 |---|---|
 | **Runtime Environment** | Node.js (v18+) |
-| **Web Framework** | Express.js (v5) |
-| **Database** | SQLite3 |
-| **Security & Middleware** | Express-Rate-Limit, Dotenv |
-| **Frontend** | HTML5, CSS3, JavaScript (Fetch API, Chart.js) |
+| **Web Framework** | Express.js (v5)[cite: 1] |
+| **Database** | SQLite3[cite: 1] |
+| **Security & Middleware** | Express-Rate-Limit (2s Rule), Dotenv[cite: 1] |
+| **Frontend & Analytics** | HTML5, CSS3, JavaScript (Fetch API, Chart.js)[cite: 2, 4] |
 
 ---
 
